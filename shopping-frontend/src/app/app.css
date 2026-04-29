@@ -1,0 +1,20 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.notify-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.notify-btn:hover {
+  background-color: #1565c0;
+}
