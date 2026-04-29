@@ -1,0 +1,25 @@
+@for (tag of objectKeys(groupedItems); track tag) {
+  <div>
+    <h2>{{ tag }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Done</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of groupedItems[tag]; track item.id) {
+          <tr>
+            <td [class.complete]="item.complete">{{ item.text }}</td>
+            <td>{{ item.quantity }}</td>
+            <td><input title="checkbox" type="checkbox" [checked]="item.complete" (change)="toggle(item)" /></td>
+            <td><button (click)="delete(item.id)">Delete</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
