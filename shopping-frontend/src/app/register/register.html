@@ -1,0 +1,12 @@
+<h2>Register</h2>
+
+<form (ngSubmit)="onRegister()">
+  <input [(ngModel)]="username" name="username" placeholder="Username" required />
+  <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
+
+  <button type="submit">Register</button>
+</form>
+
+<p *ngIf="error">{{ error }}</p>
+
+<a routerLink="/login">Back to login</a>

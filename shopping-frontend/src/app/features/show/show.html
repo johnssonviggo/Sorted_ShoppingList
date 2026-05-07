@@ -1,3 +1,11 @@
+<header class="toolbar">
+    <h1>Shopping List</h1>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+    <button (click)="enableNotifications()">Enable Notifications</button>
+</header>
+
+<app-create></app-create>
+
 @for (tag of objectKeys(groupedItems); track tag) {
   <div>
     <h2>{{ tag }}</h2>

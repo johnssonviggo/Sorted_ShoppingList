@@ -4,6 +4,7 @@ import com.example.shoppinglist.models.ShoppingItem;
 import com.example.shoppinglist.models.ShoppingItemRequest;
 import com.example.shoppinglist.repositories.ShoppingItemRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,12 @@ import java.util.List;
 public class ShoppingController {
 
     private final ShoppingItemRepository repository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public ShoppingController(ShoppingItemRepository repository) {
+    public ShoppingController(ShoppingItemRepository repository,
+                              SimpMessagingTemplate messagingTemplate) {
         this.repository = repository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @GetMapping
@@ -30,7 +34,9 @@ public class ShoppingController {
                 request.getTag(),
                 request.getQuantity()
         );
-        return repository.save(item);
+        ShoppingItem saved = repository.save(item);
+        messagingTemplate.convertAndSend("/topic/shopping", "refresh");
+        return saved;
     }
 
     @PatchMapping("/{id}")
@@ -41,7 +47,9 @@ public class ShoppingController {
                     if (request.getTag() != null) item.setTag(request.getTag());
                     if (request.getComplete() != null) item.setComplete(request.getComplete());
                     if (request.getQuantity() != null) item.setQuantity(request.getQuantity());
-                    return ResponseEntity.ok(repository.save(item));
+                    ShoppingItem updated = repository.save(item);
+                    messagingTemplate.convertAndSend("/topic/shopping", "refresh");
+                    return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -52,6 +60,7 @@ public class ShoppingController {
             return ResponseEntity.notFound().build();
         }
         repository.deleteById(id);
+        messagingTemplate.convertAndSend("/topic/shopping", "refresh");
         return ResponseEntity.noContent().build();
     }
 }
