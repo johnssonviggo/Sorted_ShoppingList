@@ -1,0 +1,45 @@
+.add-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  background: var(--color-background-secondary);
+  width: 50%;
+}
+
+.add-row input {
+  height: 28px;
+  font-size: 12px;
+  padding: 0 8px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.add-row input:focus {
+  border-color: #555;
+}
+
+.add-row input[placeholder="Item name"] { flex: 2; }
+.add-row input[placeholder="Tag"] { flex: 1.5; }
+.add-row input[type="number"] { width: 52px; }
+
+.add-row button {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #999;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.add-row button:hover { background: var(--color-background-secondary); }

@@ -1,33 +1,59 @@
+<h2 class="sr-only">Shopping list</h2>
+
 <header class="toolbar">
-    <h1>Shopping List</h1>
-    <button class="logout-btn" (click)="logout()">Logout</button>
-    <button (click)="enableNotifications()">Enable Notifications</button>
+  <span class="toolbar-title">ShoppingList</span>
+  <div class="toolbar-right">
+    <div class="avatar" (click)="toggleMenu()">{{ initials }}</div>
+    @if (menuOpen) {
+      <div class="dropdown">
+        <div class="dropdown-item" (click)="enableNotifications(); menuOpen = false">
+          <i class="ti ti-bell" aria-hidden="true"></i> Enable notifications
+        </div>
+        <div class="dropdown-item" (click)="disableNotifications(); menuOpen = false">
+          <i class="ti ti-bell-off" aria-hidden="true"></i> Disable notifications
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item danger" (click)="logout()">
+          <i class="ti ti-logout" aria-hidden="true"></i> Logout
+        </div>
+      </div>
+    }
+  </div>
 </header>
 
 <app-create></app-create>
 
-@for (tag of objectKeys(groupedItems); track tag) {
-  <div>
-    <h2>{{ tag }}</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Done</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
+<div class="columns">
+  @for (tag of objectKeys(groupedItems); track tag) {
+    <div class="col" [style.--col-bg]="getTagColor(tag)">
+      <div class="col-header">
+        <span>{{ tag }}</span>
+        <div class="color-swatches">
+          @for (color of colorOptions; track color) {
+            <div class="color-dot"
+              [style.background]="color"
+              [class.active]="getTagColor(tag) === color"
+              (click)="setTagColor(tag, color)">
+            </div>
+          }
+        </div>
+      </div>
+      <div class="col-body">
         @for (item of groupedItems[tag]; track item.id) {
-          <tr>
-            <td [class.complete]="item.complete">{{ item.text }}</td>
-            <td>{{ item.quantity }}</td>
-            <td><input title="checkbox" type="checkbox" [checked]="item.complete" (change)="toggle(item)" /></td>
-            <td><button (click)="delete(item.id)">Delete</button></td>
-          </tr>
+          <div class="item-row">
+            <span class="item-qty">{{ item.quantity }}x</span>
+            <span class="item-name" [class.done]="item.complete">{{ item.text }}</span>
+            <div class="item-actions">
+              <button (click)="toggle(item)" aria-label="Toggle done">
+                <i class="ti ti-check" aria-hidden="true"></i>
+              </button>
+              <button (click)="delete(item.id)" aria-label="Delete">
+                <i class="ti ti-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
         }
-      </tbody>
-    </table>
-  </div>
-}
+      </div>
+    </div>
+  }
+</div>

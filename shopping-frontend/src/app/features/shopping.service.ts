@@ -7,7 +7,7 @@ import { ShoppingItem } from './shopping-item';
   providedIn: 'root'
 })
 export class ShoppingService {
-  private apiUrl = 'http://127.0.0.1:8080/api/shopping';
+  private apiUrl = `http://${window.location.hostname}:8080/api/shopping`;
   private refreshSubject = new Subject<void>();
   refresh$ = this.refreshSubject.asObservable();
 

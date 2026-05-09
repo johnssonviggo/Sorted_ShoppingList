@@ -29,11 +29,25 @@ public class ShoppingController {
 
     @PostMapping
     public ShoppingItem addItem(@RequestBody ShoppingItemRequest request) {
+        List<ShoppingItem> existing = repository.findByTextIgnoreCaseAndTag(
+                request.getText(), request.getTag()
+        );
+
+        if (!existing.isEmpty()) {
+            ShoppingItem item = existing.getFirst();
+            item.setQuantity(item.getQuantity() + request.getQuantity());
+            ShoppingItem updated = repository.save(item);
+            messagingTemplate.convertAndSend("/topic/shopping", "refresh");
+            return updated;
+        }
+
         ShoppingItem item = new ShoppingItem(
                 request.getText(),
                 request.getTag(),
                 request.getQuantity()
         );
+
+
         ShoppingItem saved = repository.save(item);
         messagingTemplate.convertAndSend("/topic/shopping", "refresh");
         return saved;

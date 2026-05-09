@@ -11,7 +11,7 @@ export class WebSocketService {
 
     constructor() {
         this.client = new Client({
-            webSocketFactory: () => new SockJS('http://127.0.0.1:8080/ws'),
+            webSocketFactory: () => new SockJS(`http://${window.location.hostname}:8080/ws`),
             reconnectDelay: 5000,
             onConnect: () => {
                 this.client.subscribe('/topic/shopping', () => {

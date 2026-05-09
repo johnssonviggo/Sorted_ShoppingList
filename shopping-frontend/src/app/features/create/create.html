@@ -1,6 +1,16 @@
-<div>
-  <input [(ngModel)]="text" placeholder="Item name" />
-  <input [(ngModel)]="tag" placeholder="Tag (e.g. Fridge)" />
-  <input [(ngModel)]="quantity" type="number" min="1" title="quantity"/>
-  <button (click)="addItem()">Add item</button>
+<div class="add-row">
+  <input [(ngModel)]="text" placeholder="Item name" (keyup.enter)="addItem()" />
+  <input [(ngModel)]="tag"
+    placeholder="Tag"
+    list="tag-suggestions"
+    (keyup.enter)="addItem()" />
+  <datalist id="tag-suggestions">
+    @for (t of existingTags; track t) {
+      <option [value]="t"></option>
+    }
+  </datalist>
+  <input [(ngModel)]="quantity" type="number" min="1" title="quantity" (keyup.enter)="addItem()" />
+  <button (click)="addItem()">
+    <i class="ti ti-plus" aria-hidden="true"></i> Add
+  </button>
 </div>

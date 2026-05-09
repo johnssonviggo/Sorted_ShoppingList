@@ -26,6 +26,7 @@ export class Login {
     }).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
+        localStorage.setItem('username', res.username);
         this.router.navigate(['/']);
       },
       error: () => {
